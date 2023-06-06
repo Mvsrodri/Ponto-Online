@@ -16,17 +16,14 @@
     {{>Header}}
     <main>
         <div class="modal">
-            <form class="modal-content animate" action="/action_page.php" method="post">
+            <form class="modal-content animate" action="/descricao" method="post">
                 <div class="container">
-                    <label for="uname"><b>E-mail</b></label>
-                    <input type="email" placeholder="Digite seu E-mail" name="uname" required>
+                    <label for="uname"><b>Email</b></label>
+                    <input type="email" placeholder="Digite seu E-mail" id="email" name="email" value="{{task.email}}" required>
 
                     <label for="psw"><b>Senha</b></label>
-                    <input type="password" placeholder="Digite sua senha" name="psw" required>
-                    
-                    <button type="submit">Login</button>
-                    <button type="button"  class="regbtn">Registrar</button>
-                    <span class="psw">Esqueceu a <a href="#">senha?</a></span>
+                    <input type="password" placeholder="Digite sua senha" id="senha" name="senha" value="{{task.senha}}" required>
+                    <button type="submit" value="Login">Login</button>  
                 </div>
             </form>
         </div>

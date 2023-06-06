@@ -1,7 +1,7 @@
 
 //Fetch é responsavel por carregar o arquivo txt
 fetch('/Txt/descricao.txt', {
-    cache: 'reload' // defini o tipo de cache
+    cache: 'reload' // define o tipo de cache
 }).then(function(response) {
     if ( response.ok ) {
         // Retorna o texto do arquivo txt

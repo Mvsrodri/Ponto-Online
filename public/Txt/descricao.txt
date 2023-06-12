@@ -1,1 +1,4 @@
-teste
+O objetivo do site de ponto online é oferecer uma solução prática e eficiente para o gerenciamento de registros de ponto dos funcionários. 
+Com uma interface intuitiva e amigável, o site permite que os colaboradores registrem seus horários de entrada e saída de forma rápida e precisa, 
+eliminando a necessidade de relógios físicos ou planilhas. Além disso, o sistema irá oferecer recursos, como geração automática de relatórios de 
+frequência.

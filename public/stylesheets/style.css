@@ -84,14 +84,17 @@ main{
 }
 
 /* Full-width input fields */
-input[type=email], input[type=password] {
+input[type=email], input[type=password], input[type=text],textarea {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(204, 204, 204);
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
+
 
 /* Set a style for all buttons */
 button {
@@ -102,6 +105,7 @@ button {
   border: none;
   cursor: pointer;
   width: 100%;
+  font-size: 14px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
@@ -127,7 +131,7 @@ button:hover {
   width: 50%; /* Full width */
   height: 50%; /* Full height */
   padding-top: 60px;
-  background-color: #ffffff;
+  background-color: #f8f8f854;
   border: 1px solid #888;
   border-radius: 20px;
 }
@@ -137,4 +141,29 @@ button:hover {
   margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: none;
   width: 60%; /* Could be more or less, depending on screen size */
+}
+
+.txt{
+  width: 100%;
+  margin-bottom: 5%;
+  text-align: justify;
+  
+}
+.text{
+  width: 100%;
+  margin-top: 7%;
+  margin-bottom: 7%;
+  margin-right: 20%;
+  margin-left: 20%;
+  color: #436285;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  
+}
+.title{
+  color: #436285;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  text-align: center;
 }

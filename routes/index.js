@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var TaskSchema = require("../validador_Formulario/TaskSValidador");
+const { enviar } = require('../public/javascripts/emailContato');
+
 
 router.get('/', function(req, res) {
   res.render('index');
@@ -43,5 +45,8 @@ router.post('/descricao', (req, res) => {
     }
   }
 });
+router.post('/contato/enviar', enviar);
+
+
 
 module.exports = router;

@@ -161,6 +161,18 @@ button:hover {
   font-size: 18px;
   
 }
+.textDev{
+  width: 100%;
+  margin-top: 7%;
+  margin-bottom: 7%;
+  margin-right: 20%;
+  margin-left: 20%;
+  color: #436285;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+}
 .title{
   color: #436285;
   font-family: 'Montserrat', sans-serif;

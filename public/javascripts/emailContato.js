@@ -4,17 +4,17 @@ const nodemailer = require('nodemailer');
 exports.enviar = (req, res) => {
     const { nome, email, assunto, mensagem } = req.body;
     var transport = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-          user: "e9422849ad0ee2",
-          pass: "f14321f430cc20"
+          user: process.env.USER,
+          pass: process.env.PASS
         }
     });
     
     var message = {
-      from: "noreply@local.com.br",
-      to: "marcos@local.com.br",
+      from: process.env.FROM_EMAIL,
+      to:  process.env.TO_EMAIL,
       subject: "E-mail Contato",
       text: `Nome: ${nome}\nE-mail: ${email}\nAssunto: ${assunto}\n\nMensagem:${mensagem}`,
     };

@@ -3,6 +3,8 @@ var router = express.Router();
 var TaskSchema = require("../validador_Formulario/TaskSValidador");
 const { enviar } = require('../public/javascripts/emailContato');
 
+const Ponto = require("../Model/Ponto");
+
 
 router.get('/', function(req, res) {
   res.render('index');
@@ -23,6 +25,7 @@ router.get('/desenvolvedores', function(req, res) {
 router.get('/contato', function(req, res) {
   res.render('contato');
 });
+
 
 //Validação do Formulario atraves do metodo post verificando a rota
 router.post('/descricao', (req, res) => {
@@ -46,6 +49,41 @@ router.post('/descricao', (req, res) => {
   }
 });
 router.post('/contato/enviar', enviar);
+
+router.post('/registro', (req, res) => {
+  const ponto = new Ponto({
+    data: new Date(),
+    entrada1: req.body.entrada1,
+    saida1: req.body.saida1,
+    entrada2: req.body.entrada2,
+    saida2: req.body.saida2
+  });
+
+  ponto.save()
+    .then(() => {    
+      res.redirect('/home');
+    })
+    .catch((err) => {
+      console.error('Erro ao registrar ponto:', err);
+      res.sendStatus(500);
+    });
+  
+});
+
+router.get('/home', (req, res) => {
+  Ponto.find()
+    .then((pontos) => {
+      pontos.forEach((ponto) => {
+        ponto.dataFormatada = ponto.data.toLocaleDateString('pt-BR');
+      });
+      res.render('home', { pontos });
+      console.log(pontos);
+    })
+    .catch((err) => {
+      console.error('Erro ao buscar os pontos:', err);
+      res.sendStatus(500);
+    });
+});
 
 
 

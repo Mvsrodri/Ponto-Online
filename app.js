@@ -6,6 +6,8 @@ var logger = require('morgan');
 var dotenv = require('dotenv');
 dotenv.config();
 
+var mongoose = require('mongoose');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -29,6 +31,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+mongoose.connect('mongodb://localhost:27017/Ponto_online', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 
 

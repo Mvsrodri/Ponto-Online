@@ -51,6 +51,18 @@ router.post('/descricao', (req, res) => {
 router.post('/contato/enviar', enviar);
 
 router.post('/registro', (req, res) => {
+  const entrada1 = req.body.entrada1;
+  const saida1 = req.body.saida1;
+  const entrada2 = req.body.entrada2;
+  const saida2 = req.body.saida2;
+
+  // Validar horários
+  if (saida1 < entrada1 || entrada2 < saida1 || saida2 < entrada1 || saida2 < saida1) {
+    console.error('Horários inválidos');
+    return res.sendStatus(400);
+  }
+  
+  
   const ponto = new Ponto({
     data: new Date(),
     entrada1: req.body.entrada1,
@@ -58,6 +70,7 @@ router.post('/registro', (req, res) => {
     entrada2: req.body.entrada2,
     saida2: req.body.saida2
   });
+  
 
   ponto.save()
     .then(() => {    
@@ -84,7 +97,35 @@ router.get('/home', (req, res) => {
       res.sendStatus(500);
     });
 });
+router.post('/carga-registros', (req, res) => {
+  const registros = [];
 
+  // Obter a data atual
+  const dataAtual = new Date();
+
+  // Criar 5 datas anteriores
+  for (let i = 1; i <= 5; i++) {
+    const dataAnterior = new Date(dataAtual);
+    dataAnterior.setDate(dataAtual.getDate() - i);
+
+    registros.push({
+      data: dataAnterior,
+      entrada1: '09:00',
+      saida1: '12:00',
+      entrada2: '13:00',
+      saida2: '18:00'
+    });
+  }
+
+  Ponto.insertMany(registros)
+    .then(() => {
+      res.redirect('/home');
+    })
+    .catch((err) => {
+      console.error('Erro ao realizar carga de registros:', err);
+      res.sendStatus(500);
+    });
+});
 
 
 module.exports = router;

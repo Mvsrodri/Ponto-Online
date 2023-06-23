@@ -62,25 +62,36 @@ router.post('/registro', (req, res) => {
     return res.sendStatus(400);
   }
   
+  const novaData = new Date();
   
-  const ponto = new Ponto({
-    data: new Date(),
-    entrada1: req.body.entrada1,
-    saida1: req.body.saida1,
-    entrada2: req.body.entrada2,
-    saida2: req.body.saida2
-  });
-  
+  Ponto.findOne({ data: { $gte: novaData.setHours(0, 0, 0, 0), $lte: novaData.setHours(23, 59, 59, 999) } })
+    .then((pontoExistente) => {
+      if (pontoExistente) {
+        console.error('Já existe um ponto registrado para esta data');
+        return res.sendStatus(409); // Conflito - Data já registrada
+      }
+      
+      const ponto = new Ponto({
+        data: novaData,
+        entrada1: req.body.entrada1,
+        saida1: req.body.saida1,
+        entrada2: req.body.entrada2,
+        saida2: req.body.saida2
+      });
 
-  ponto.save()
-    .then(() => {    
-      res.redirect('/home');
+      ponto.save()
+        .then(() => {    
+          res.redirect('/home');
+        })
+        .catch((err) => {
+          console.error('Erro ao registrar ponto:', err);
+          res.sendStatus(500);
+        });
     })
     .catch((err) => {
-      console.error('Erro ao registrar ponto:', err);
+      console.error('Erro ao buscar ponto existente:', err);
       res.sendStatus(500);
     });
-  
 });
 
 router.get('/home', (req, res) => {
@@ -97,32 +108,66 @@ router.get('/home', (req, res) => {
       res.sendStatus(500);
     });
 });
-router.post('/carga-registros', (req, res) => {
-  const registros = [];
+router.post('/carga-registros', async (req, res) => {
+  const pontos = [];
 
-  // Obter a data atual
   const dataAtual = new Date();
+  const decrementoDias = 1;
+  const maxTentativas = 10;
+  let tentativas = 0;
 
-  // Criar 5 datas anteriores
-  for (let i = 1; i <= 5; i++) {
-    const dataAnterior = new Date(dataAtual);
-    dataAnterior.setDate(dataAtual.getDate() - i);
+  for (let i = 0; i < 5; i++) {
+    let novaData;
+    let pontoExistente;
 
-    registros.push({
-      data: dataAnterior,
+    do {
+      novaData = new Date(dataAtual.getTime() - i * decrementoDias * 24 * 60 * 60 * 1000);
+      novaData.setHours(0, 0, 0, 0); // Definir horários para 00:00:00
+      pontoExistente = await Ponto.findOne({ data: novaData });
+      tentativas++;
+    } while (pontoExistente && tentativas < maxTentativas);
+
+    if (tentativas >= maxTentativas) {
+      console.error('Não foi possível encontrar uma nova data disponível para registro');
+      return res.sendStatus(500);
+    }
+
+    const pontosExistenteMesmaData = await Ponto.find({ data: { $eq: novaData } });
+
+    if (pontosExistenteMesmaData.length > 0) {
+      console.error('Ponto já registrado com a mesma data');
+      return res.sendStatus(400);
+    }
+
+    const ponto = new Ponto({
+      data: novaData,
       entrada1: '09:00',
       saida1: '12:00',
       entrada2: '13:00',
       saida2: '18:00'
     });
+
+    pontos.push(ponto);
   }
 
-  Ponto.insertMany(registros)
+  Ponto.insertMany(pontos)
     .then(() => {
       res.redirect('/home');
     })
     .catch((err) => {
-      console.error('Erro ao realizar carga de registros:', err);
+      console.error('Erro ao carregar registros:', err);
+      res.sendStatus(500);
+    });
+});
+router.get('/excluir/:id', (req, res) => {
+  const pontoId = req.params.id;
+
+  Ponto.findByIdAndRemove(pontoId)
+    .then(() => {
+      res.redirect('/home');
+    })
+    .catch((err) => {
+      console.error('Erro ao excluir o registro de ponto:', err);
       res.sendStatus(500);
     });
 });

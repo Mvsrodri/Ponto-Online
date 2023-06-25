@@ -16,7 +16,7 @@
     {{>Header}}
     <main>
         <div class="modal">
-            <form class="modal-content animate" action="/descricao" method="post">
+            <form class="modal-content animate" action="/login" method="post">
                 <div class="container">
                     <h1 class="title">Ponto Online</h1>
                     <div class="txt">
@@ -29,7 +29,8 @@
 
                     <label for="psw"><b>Senha</b></label>
                     <input type="password" placeholder="Digite sua senha" id="senha" name="senha" value="{{task.senha}}" required>
-                    <button type="submit" value="Login">Login</button>  
+                    <button type="submit" value="Login">Login</button>       
+                    <p>Não possui uma conta? <a href="/cadastro">Cadastrar-se</a></p>         
                 </div>
             </form>
         </div>

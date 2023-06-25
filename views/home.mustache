@@ -11,64 +11,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
+<body class="background">
 
-{{>Header}}
-  <h1>Registro de Ponto</h1>
-  <form action="/carga-registros" method="POST">
-  <button type="submit">Realizar Carga de Registros</button>
-</form>
-
-  <form action="/registro" method="POST">
-    <label for="entrada1">Entrada 1:</label>
-    <input type="text" name="entrada1" id="entrada1"><br>
-
-    <label for="saida1">Saída 1:</label>
-    <input type="text" name="saida1" id="saida1"><br>
-
-    <label for="entrada2">Entrada 2:</label>
-    <input type="text" name="entrada2" id="entrada2"><br>
-
-    <label for="saida2">Saída 2:</label>
-    <input type="text" name="saida2" id="saida2"><br>
-
-    <button type="submit">Registrar Ponto</button>
-  </form>
-
-  <h2>Registros de Ponto</h2>
-
- <table>
-  <thead>
-    <tr>
-      <th>Data</th>
-      <th>Entrada 1</th>
-      <th>Saída 1</th>
-      <th>Entrada 2</th>
-      <th>Saída 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#pontos}}
-      <tr>
-        <td>{{dataFormatada}}</td>    
-        <td>{{entrada1}}</td>
-        <td>{{saida1}}</td>
-        <td>{{entrada2}}</td>
-        <td>{{saida2}}</td>
-        <td>
-          <a href="/editar/{{_id}}">
-            <i class="fas fa-edit"></i>
-          </a>
-          <a href="/excluir/{{_id}}">
-            <i class="fas fa-trash-alt"></i>
-          </a>
-        </td>
-      </tr>
-    {{/pontos}}
-  </tbody>
-</table>
-
-
+  {{>HeaderLogin}}
+  <div class="Ponto-container">
+    <div class="button- container">
+      <form action="/carga-registros" method="POST">
+        <button type="submit">Realizar Carga de Registros</button>
+      </form>
+      <form action="/registrar" method="GET">
+        <button type="submit">Registrar novo Ponto</button>
+      </form>
+    </div>
+    <h1 class="title">Pontos Registrados</h1>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Entrada 1</th>
+            <th>Saída 1</th>
+            <th>Entrada 2</th>
+            <th>Saída 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#pontos}}
+            <tr>
+              <td>{{dataFormatada}}</td>    
+              <td>{{entrada1}}</td>
+              <td>{{saida1}}</td>
+              <td>{{entrada2}}</td>
+              <td>{{saida2}}</td>
+              <td>
+                <a href="/editar/{{_id}}">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a href="/excluir/{{_id}}">
+                  <i class="fas fa-trash-alt"></i>
+                </a>
+              </td>
+            </tr>
+          {{/pontos}}
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   {{>Footer}}
 </body>

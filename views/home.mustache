@@ -25,6 +25,11 @@
     </div>
     <h1 class="title">Pontos Registrados</h1>
     <div class="table-container">
+      <select id="ordenarPorData">
+        <option value="sel">Selecionar</option>
+        <option value="asc">Ordenar por data (crescente)</option>
+        <option value="desc">Ordenar por data (decrescente)</option>
+      </select>
       <table>
         <thead>
           <tr>
@@ -59,5 +64,6 @@
   </div>
 
   {{>Footer}}
+  <script src="/javascripts/filtro.js"></script>
 </body>
 </html>

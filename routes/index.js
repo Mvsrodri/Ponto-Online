@@ -133,14 +133,28 @@ router.get('/sair', (req, res) => {
 // Rotas protegidas
 // router.use(authMiddleware);
 
-router.get('/home',authMiddleware, (req, res) => {
+router.get('/home', authMiddleware, (req, res) => {
+  const { ordenacao } = req.query;
+
+  const ordenarPorData = (pontos) => {
+    if (ordenacao === 'asc') {
+      return pontos.sort((a, b) => a.data - b.data);
+    } else if (ordenacao === 'desc') {
+      return pontos.sort((a, b) => b.data - a.data);
+    } else {
+      return pontos; // Não especificado, mantenha a ordem original
+    }
+  };
+
   Ponto.find()
     .then((pontos) => {
       pontos.forEach((ponto) => {
         ponto.dataFormatada = ponto.data.toLocaleDateString('pt-BR');
       });
-      res.render('home', { pontos });
-      console.log(pontos);
+
+      const pontosOrdenados = ordenarPorData(pontos); // Chamar a função de ordenação
+
+      res.render('home', { pontos: pontosOrdenados }); // Passar os pontos ordenados para o template
     })
     .catch((err) => {
       console.error('Erro ao buscar os pontos:', err);

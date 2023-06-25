@@ -1,4 +1,3 @@
-
 //Fetch é responsavel por carregar o arquivo txt
 fetch('/Txt/dev.txt', {
     cache: 'reload' // define o tipo de cache

@@ -48,7 +48,7 @@ exports.EditarUsuario = (req, res) => {
       .catch((error) => {
         // Erro ao editar o perfil, retorna um status de erro
         console.error('Erro ao editar perfil:', error);
-        res.sendStatus(500);
+        res.status(500).json({ message: 'Erro ao editar perfil' });
       });
 };
   
@@ -64,6 +64,6 @@ exports.ExcluirUsuario = (req, res) => {
       })
       .catch((error) => {
         console.error('Erro ao excluir perfil:', error);
-        res.sendStatus(500);
+        res.status(500).json({ message: 'Erro ao excluir perfil' });
       });
 };

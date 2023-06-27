@@ -10,7 +10,7 @@ exports.RegistrarPonto = (req, res) => {
     // Validar horários
     if (saida1 < entrada1 || entrada2 < saida1 || saida2 < entrada1 || saida2 < saida1) {
       console.error('Horários inválidos');
-      return res.sendStatus(400);
+      return res.status(400).json({ message: 'Horários inválidos' });
     }
   
     const novaData = new Date();
@@ -19,7 +19,7 @@ exports.RegistrarPonto = (req, res) => {
       .then((pontoExistente) => {
         if (pontoExistente) {
           console.error('Já existe um ponto registrado para esta data');
-          return res.sendStatus(409); // Conflito - Data já registrada
+          return res.status(409).json({ message: 'Já existe um ponto registrado para esta data' }); // Conflito - Data já registrada
         }
         // Criar um novo registro de ponto
         const ponto = new Ponto({
@@ -36,12 +36,12 @@ exports.RegistrarPonto = (req, res) => {
           })
           .catch((err) => {
             console.error('Erro ao registrar ponto:', err);
-            res.sendStatus(500);
+            res.status(500).json({ message: 'Erro ao registrar ponto' });
           });
       })
       .catch((err) => {
         console.error('Erro ao buscar ponto existente:', err);
-        res.sendStatus(500);
+        res.status(500).json({ message: 'Erro ao buscar ponto existente' });
       });
   };
 
@@ -90,7 +90,7 @@ exports.EditarPonto = (req, res) => {
   // Validar horários
   if (saida1 < entrada1 || entrada2 < saida1 || saida2 < entrada1 || saida2 < saida1) {
     console.error('Horários inválidos');
-    return res.sendStatus(400);
+    return res.status(400).json({ message: 'Horários inválidos' });
   }
   // Encontrar e atualizar o registro de ponto pelo ID
   Ponto.findByIdAndUpdate(pontoId, {
@@ -104,7 +104,7 @@ exports.EditarPonto = (req, res) => {
     })
     .catch((err) => {
       console.error('Erro ao editar o ponto:', err);
-      res.sendStatus(500);
+      res.status(500).json({ message: 'Erro ao editar o ponto' });
     });
 };
 
@@ -119,7 +119,7 @@ exports.ExcluirPontos = (req, res) => {
       })
       .catch((err) => {
         console.error('Erro ao excluir o registro de ponto:', err);
-        res.sendStatus(500);
+        res.status(500).json({ message: 'Erro ao excluir o registro de ponto' });
       });
 };
 

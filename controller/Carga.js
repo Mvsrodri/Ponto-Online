@@ -25,7 +25,7 @@ exports.CargaPontos = async (req, res) => {
       // Verificar se a quantidade de tentativas excedeu o limite
       if (tentativas >= maxTentativas) {
         console.error('Não foi possível encontrar uma nova data disponível para registro');
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Não foi possível encontrar uma nova data disponível para registro' });
       }
       
       // Verificar se já existe um ponto registrado com a mesma data
@@ -33,7 +33,7 @@ exports.CargaPontos = async (req, res) => {
   
       if (pontosExistenteMesmaData.length > 0) {
         console.error('Ponto já registrado com a mesma data');
-        return res.sendStatus(400);
+        return res.status(400).json({ message: 'Ponto já registrado com a mesma data' });
       }
       
       // Criar um novo ponto com horários predefinidos
@@ -55,6 +55,6 @@ exports.CargaPontos = async (req, res) => {
       })
       .catch((err) => {
         console.error('Erro ao carregar registros:', err);
-        res.sendStatus(500);
+        res.status(500).json({ message: 'Erro ao carregar registros' });
       });
   };

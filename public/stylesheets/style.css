@@ -142,6 +142,11 @@ button:hover {
   border: none;
   width: 60%; /* Could be more or less, depending on screen size */
 }
+.modal-content-ed {
+  margin: 5% auto 0% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: none;
+  width: 60%; /* Could be more or less, depending on screen size */
+}
 
 .txt{
   width: 100%;

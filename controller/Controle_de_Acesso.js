@@ -2,6 +2,30 @@ const Usuario = require('../Model/Usuario');
 const secretKey = process.env.SECRET_KEY;
 const jwt = require('jsonwebtoken');
 
+
+
+exports.authMiddleware = (req, res, next) => {
+  // Verifique se o token JWT está presente no header da requisição ou nos cookies
+  const token = req.headers.authorization || req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Token de autenticação não fornecido' });
+  }
+
+  // Verifique e decodifique o token JWT
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: 'Token de autenticação inválido' });
+    }
+
+    // O token é válido, adicione as informações do usuário ao objeto req
+    req.user = decoded;
+
+    // Continue para a próxima rota
+    next();
+  });
+};
+
 exports.Login = (req, res) => {
     const { email, senha } = req.body;
   
@@ -23,7 +47,8 @@ exports.Login = (req, res) => {
   
         // Armazena o token em um cookie
         res.cookie('token', token, { httpOnly: true });
-  
+        
+        // Redireciona para a página inicial
         res.redirect('/home');
       })
       .catch((error) => {

@@ -1,9 +1,9 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const router = express.Router();
 const TaskSchema = require("../validador_Formulario/TaskSValidador");
 const { enviar } = require('../public/javascripts/emailContato');
 
+const { authMiddleware }= require('../controller/Controle_de_Acesso');
 const { Login }= require('../controller/Controle_de_Acesso');
 const { Sair }= require('../controller/Controle_de_Acesso');
 
@@ -18,32 +18,6 @@ const { ExibirPontoEditar }= require('../controller/CRUD_Pontos');
 const { CadastrarUsuario }= require('../controller/CRUD_Usuarios');
 const { EditarUsuario }= require('../controller/CRUD_Usuarios');
 const { ExcluirUsuario }= require('../controller/CRUD_Usuarios');
-
-const Ponto = require("../Model/Ponto");
-
-const secretKey = process.env.SECRET_KEY;
-
-const authMiddleware = (req, res, next) => {
-  // Verifique se o token JWT está presente no header da requisição ou nos cookies
-  const token = req.headers.authorization || req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ message: 'Token de autenticação não fornecido' });
-  }
-
-  // Verifique e decodifique o token JWT
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: 'Token de autenticação inválido' });
-    }
-
-    // O token é válido, adicione as informações do usuário ao objeto req
-    req.user = decoded;
-
-    // Continue para a próxima rota
-    next();
-  });
-};
 
 router.get('/', function(req, res) {
   res.render('index');
@@ -101,6 +75,7 @@ router.post('/carga-registros',authMiddleware,CargaPontos);
 router.get('/registrar',authMiddleware, function(req, res) {
   res.render('registrar');
 });
+
 //Rota para exibir a view de Perfil
 router.get('/perfil',authMiddleware, function(req, res) {
   res.render('perfil');

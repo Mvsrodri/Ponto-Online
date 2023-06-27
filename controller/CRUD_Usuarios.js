@@ -1,5 +1,6 @@
 const Usuario = require('../Model/Usuario');
 
+// Função de cadastro do perfil
 exports.CadastrarUsuario = (req, res) => {
     const { email, senha } = req.body;
   
@@ -33,22 +34,25 @@ exports.CadastrarUsuario = (req, res) => {
         res.status(500).json({ message: 'Erro ao cadastrar usuário' });
       });
 };
-
+// Função de edição do perfil
 exports.EditarUsuario = (req, res) => {
     const { email, senha } = req.body;
     const userEmail = req.user.email;
-  
+    
+    // Procura e atualiza o documento do usuário com o email correspondente
     Usuario.findOneAndUpdate({ email: userEmail }, { email, senha })
       .then(() => {
+        // Redireciona para a página de perfil após a edição
         res.redirect('/perfil');
       })
       .catch((error) => {
+        // Erro ao editar o perfil, retorna um status de erro
         console.error('Erro ao editar perfil:', error);
         res.sendStatus(500);
       });
 };
   
-  // Rota de exclusão do perfil
+// Função de exclusão do perfil
 exports.ExcluirUsuario = (req, res) => {
     const userEmail = req.user.email;
   
